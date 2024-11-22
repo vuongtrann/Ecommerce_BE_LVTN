@@ -23,9 +23,10 @@ public class User extends BaseEntity{
     String lastName;
     String phone;
 
-    @UniqueElements
+    @UniqueElements(message = "Email already exists")
     String email;
     String password;
+    @UniqueElements(message = "Username already exists")
     String userName;
     ERole role;
 
