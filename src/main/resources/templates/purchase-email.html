@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin mua hàng</title>
+</head>
+<body>
+<h2>Cảm ơn bạn <span th:text="${userName}">Tên người dùng</span> đã mua sản phẩm!</h2>
+<p>Chúng tôi đã nhận được đơn hàng của bạn với các sản phẩm sau:</p>
+<table>
+    <thead>
+    <tr>
+        <th>Tên sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Giá</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.productName}">Tên sản phẩm</td>
+        <td th:text="${item.quantity}">Số lượng</td>
+        <td th:text="${item.price}">Giá</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Tổng số tiền:</strong> <span th:text="${totalAmount}"></span></p>
+<p>Chúng tôi sẽ xử lý đơn hàng và gửi sản phẩm đến bạn trong thời gian sớm nhất.</p>
+<p>Trân trọng,</p>
+<p>Đội ngũ hỗ trợ</p>
+</body>
+</html>
