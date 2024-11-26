@@ -2,11 +2,13 @@ package com.spring.ecommerce.lvtn.controller;
 
 import com.spring.ecommerce.lvtn.model.Dao.Request.CategoryForm;
 import com.spring.ecommerce.lvtn.model.Dao.Respone.ApiResponse;
+import com.spring.ecommerce.lvtn.model.Dao.Respone.CategoryProjection;
 import com.spring.ecommerce.lvtn.model.Entity.Category;
 import com.spring.ecommerce.lvtn.service.CategoryService;
 import com.spring.ecommerce.lvtn.utils.enums.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +24,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Category>>> getAllCategory() {
-        return ResponseEntity.ok(
-                ApiResponse.builderResponse(
-                        SuccessCode.FETCHED,
-                        categoryService.findAll()
-                )
-        );
+    public ResponseEntity<Page<CategoryProjection>> getAllCategory(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction
+    ){
+        return ResponseEntity.ok(categoryService.findAll(page, size, sortBy, direction));
     }
     @GetMapping("/{categoryId}")
     public ResponseEntity<ApiResponse<Optional<Category>>> getCategoryById(@PathVariable String categoryId){
@@ -39,7 +41,7 @@ public class CategoryController {
                 )
         );
     }
-    @GetMapping("slug/{slug}")
+    @GetMapping("/slug/{slug}")
     public ResponseEntity<ApiResponse<Optional<Category>>> getCategoryBySlug(@PathVariable String slug){
         return ResponseEntity.ok(
                 ApiResponse.builderResponse(
@@ -75,7 +77,7 @@ public class CategoryController {
         return ResponseEntity.ok(
                 ApiResponse.builderResponse(
                         SuccessCode.UPDATED,
-                        "Updated"
+                        "Updated status successfully !"
                 )
         );
     }

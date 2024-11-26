@@ -15,6 +15,12 @@ public enum ErrorCode {
     CANNOT_DELETE_CATEGORY_WITH_SUB_CATEGORIES(400, "Cannot delete category with sub-categories", HttpStatus.BAD_REQUEST),
     CATEGORY_HAS_RELATIONSHIPS(400,"Cannot delete category because this category have children or is parent",HttpStatus.BAD_REQUEST),
 
+    //collection
+    COLLECTION_NOT_FOUND(404, "Collection Not Found!", HttpStatus.NOT_FOUND),
+    COLLECTION_ALREADY_EXISTS(409, "Collection Already Exists!", HttpStatus.CONFLICT),
+    COLLECTION_ALREADY_EXISTS_WITH_SAME_NAME(409, "Collection already exists with same name", HttpStatus.CONFLICT),
+    COLLECTION_HAS_RELATIONSHIPS(400,"Cannot delete collection because this category have children or is parent",HttpStatus.BAD_REQUEST),
+
     //product
     PRODUCT_NOT_FOUND(404, "Product Not Found!", HttpStatus.NOT_FOUND),
     PRODUCT_ALREADY_EXISTS(409, "Product Already Exists!", HttpStatus.CONFLICT),
@@ -28,6 +34,10 @@ public enum ErrorCode {
     INVALID_FILE_MIME_TYPE(400, "Invalid File Mime Type!", HttpStatus.BAD_REQUEST),
     INVALID_FILE_SIZE(400, "Invalid File Size!", HttpStatus.BAD_REQUEST),
     FILE_NOT_FOUND(404, "File Not Found!", HttpStatus.NOT_FOUND),
+
+    //Image
+    IMAGE_NOT_FOUND(404, "Image Not Found!", HttpStatus.NOT_FOUND),
+    CANNOT_DELETE_PRIMARY_IMAGE(400, "Cannot delete primary image!", HttpStatus.BAD_REQUEST),
 
     //Product Banner
     PRODUCT_BANNER_NOT_FOUND(404, "Product Banner Not Found!", HttpStatus.NOT_FOUND),
