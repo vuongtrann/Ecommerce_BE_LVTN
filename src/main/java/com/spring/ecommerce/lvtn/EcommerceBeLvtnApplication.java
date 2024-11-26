@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 import javax.crypto.SecretKey;
 
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 @SpringBootApplication
+@EnableMongoRepositories
 public class EcommerceBeLvtnApplication {
     @Autowired
     private  Environment environment;

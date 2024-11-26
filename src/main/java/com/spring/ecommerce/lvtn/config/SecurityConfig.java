@@ -29,9 +29,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Tắt CSRF vì API REST không cần CSRF
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/auth/**").permitAll() // Endpoint cho đăng nhập, đăng ký
-                        .requestMatchers("/api/v1/category/**").authenticated() // Yêu cầu xác thực cho API category
-                        .anyRequest().authenticated()) // Endpoint còn lại yêu cầu xác thực
+//                        .requestMatchers("/api/v1/auth/**").permitAll() // Endpoint cho đăng nhập, đăng ký
+//                        .requestMatchers("/api/v1/category/**").authenticated() // Yêu cầu xác thực cho API category
+//                        .requestMatchers("/api/v1/product/**").authenticated() // Yêu cầu xác thực cho API product
+                        .anyRequest().permitAll()) // Endpoint còn lại yêu cầu xác thực
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không dùng session
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Thêm bộ lọc JWT vào chuỗi
 

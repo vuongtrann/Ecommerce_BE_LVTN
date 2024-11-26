@@ -2,6 +2,8 @@ package com.spring.ecommerce.lvtn.service.IMPL;
 
 import com.spring.ecommerce.lvtn.exception.AppException;
 import com.spring.ecommerce.lvtn.model.Dao.Request.CategoryForm;
+import com.spring.ecommerce.lvtn.model.Dao.Respone.CategoryProjection;
+import com.spring.ecommerce.lvtn.model.Dao.Respone.ProductProjection;
 import com.spring.ecommerce.lvtn.model.Entity.Category;
 import com.spring.ecommerce.lvtn.model.Entity.ProductVariant.VariantOption;
 import com.spring.ecommerce.lvtn.repository.CategoryRepository;
@@ -10,6 +12,9 @@ import com.spring.ecommerce.lvtn.service.Util.SlugifyService;
 import com.spring.ecommerce.lvtn.utils.enums.ErrorCode;
 import com.spring.ecommerce.lvtn.utils.enums.Status;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +33,15 @@ public class CategoryServiceIMPL implements CategoryService {
 
 
     @Override
-    public List<Category> findAll() {
-        return categoryRepository.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    public Page<CategoryProjection> findAll(int page, int size, String sortBy, String direction){
+       Sort sort = Sort.by(Sort.Order.by(sortBy));
+       if (direction.equalsIgnoreCase("desc")) {
+           sort = sort.descending();
+       } else if (direction.equalsIgnoreCase("asc")) {
+           sort = sort.ascending();
+       }
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return categoryRepository.findAllProjectedBy(pageable);
     }
 
     @Override
@@ -64,8 +76,8 @@ public class CategoryServiceIMPL implements CategoryService {
         category.setSlug(slugifyService.generateSlug(categoryForm.getName()));
         category.setCreatedAt(Instant.now());
         category.setUpdatedAt(Instant.now());
-        category.setVariantOptions(categoryForm.getVariantOptions());
-        category.setSpecificationOptions(categoryForm.getSpecificationOptions());
+        category.setVariantTypes(categoryForm.getVariantTypes());
+        category.setSpecificationTypes(categoryForm.getSpecificationTypes());
         category.setIsFeatured(categoryForm.getIsFeatured());
 
         category = categoryRepository.save(category);
@@ -119,8 +131,8 @@ public class CategoryServiceIMPL implements CategoryService {
         category.setName(categoryForm.getName());
         category.setSlug(slugifyService.generateSlug(categoryForm.getName()));
         category.setUpdatedAt(Instant.now());
-        category.setVariantOptions(categoryForm.getVariantOptions());
-        category.setSpecificationOptions(categoryForm.getSpecificationOptions());
+        category.setVariantTypes(categoryForm.getVariantTypes());
+        category.setSpecificationTypes(categoryForm.getSpecificationTypes());
         category.setIsFeatured(categoryForm.getIsFeatured());
 
         return categoryRepository.save(category);

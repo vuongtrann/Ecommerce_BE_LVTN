@@ -14,8 +14,8 @@ public class CategoryForm {
     private List<String> parentId;
     private List<String> childId;
     private int level;
-    private List<VariantType> variantOptions;
-    private List<VariantType> specificationOptions;
+    private List<VariantType> variantTypes;
+    private List<VariantType> specificationTypes;
 
     private Boolean isFeatured;
 
