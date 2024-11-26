@@ -37,8 +37,8 @@ public class Category extends BaseEntity{
     @JsonIgnoreProperties({"parent", "children"})
     private List<Category> children = new ArrayList<>();
 
-    private List<VariantType> variantOptions;
-    private List<VariantType> specificationOptions;
+    private List<VariantType> variantTypes;
+    private List<VariantType> specificationTypes;
     private Boolean isFeatured;
 
 
@@ -48,5 +48,6 @@ public class Category extends BaseEntity{
         this.children = childCategories;
         this.parent = parentCategories;
     }
+
 
 }

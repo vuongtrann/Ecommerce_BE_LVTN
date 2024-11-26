@@ -1,6 +1,7 @@
 package com.spring.ecommerce.lvtn.model.Dao.Request;
 
 
+import com.spring.ecommerce.lvtn.model.Entity.ProductVariant.ProductVariant;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.NumberFormat;
@@ -8,6 +9,7 @@ import org.springframework.format.annotation.NumberFormat;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ProductForm {
@@ -41,4 +43,14 @@ public class ProductForm {
     private String sellingType;
 
     private List<String> categories = new ArrayList<>();
+
+    private List<String> brands = new ArrayList<>();
+
+    private boolean hasVariants;
+    private List<ProductVariant> variants = new ArrayList<>();
+    private Map<String, List<String>> options;
+
+    private List<String> collections;
+
+    private Map <String, String> specifications;
 }
