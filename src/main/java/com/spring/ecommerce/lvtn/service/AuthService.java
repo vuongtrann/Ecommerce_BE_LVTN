@@ -2,9 +2,10 @@ package com.spring.ecommerce.lvtn.service;
 
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.LoginForm;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.RegisterForm;
+import com.spring.ecommerce.lvtn.model.Entity.User;
 
 public interface AuthService {
-    public void register(RegisterForm registerForm);
+    public User register(RegisterForm registerForm);
     public String login(LoginForm loginForm);
     public void verifyEmail(String token);
     public void resendVerifyEmail(String email);

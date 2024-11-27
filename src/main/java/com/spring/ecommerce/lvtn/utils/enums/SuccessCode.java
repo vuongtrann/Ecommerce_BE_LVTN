@@ -17,8 +17,11 @@ public enum SuccessCode {
     TOKEN_REFRESH(200, "Token refreshed successfully", HttpStatus.OK),
     SEND_MAIL_FORGOT_PASSWORD( 200, "Password reset link sent to your email" , HttpStatus.OK ),
     VERIFY_FORGOT_PASSWORD( 200, "Password changed successfully", HttpStatus.OK ),
+    VERIFY_EMAIL( 200, "Email verified successfully", HttpStatus.OK ),
+    VERIFY_ACCOUNT( 200, "Account verified successfully", HttpStatus.OK ),
     SEND_MAIL_VERIFY_ACCOUNT( 200, "Confirmation link sent to your email", HttpStatus.OK ),
-    CHANGE_PASSWORD( 200, "Password changed successfully",  HttpStatus.OK );
+    CHANGE_PASSWORD( 200, "Password changed successfully",  HttpStatus.OK ),
+    CHANGE_USERNAME( 200, "Username changed successfully",  HttpStatus.OK );
 
 
     private final int code;

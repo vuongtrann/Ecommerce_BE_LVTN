@@ -4,7 +4,10 @@ import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.ChangePasswordForm;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.ChangeUserNameForm;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.LoginForm;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.RegisterForm;
+import com.spring.ecommerce.lvtn.model.Dao.Respone.ApiResponse;
+import com.spring.ecommerce.lvtn.model.Entity.User;
 import com.spring.ecommerce.lvtn.service.AuthService;
+import com.spring.ecommerce.lvtn.utils.enums.SuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,31 +27,41 @@ public class AuthController {
     private final AuthService authservice;
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterForm form) {
-       authservice.register(form);
-       return ResponseEntity.ok("Register successfully");
+    public ResponseEntity<ApiResponse<User>> register(@RequestBody @Valid RegisterForm form) {
+       User user = authservice.register(form);
+       return ResponseEntity.ok( ApiResponse.builderResponse(
+               SuccessCode.REGISTER, user
+       ));
     }
 
     @GetMapping("/verify/{token}")
-    public ResponseEntity verify(@PathVariable String token) {
+    public ResponseEntity<ApiResponse<String>> verify(@PathVariable String token) {
         authservice.verifyEmail(token);
-        return ResponseEntity.ok("Verify successfully");
+        return ResponseEntity.ok(ApiResponse.builderResponse(
+                SuccessCode.VERIFY_ACCOUNT, null
+        ));
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginForm form) {
-        return ResponseEntity.ok(authservice.login(form));
+    public ResponseEntity<ApiResponse<String>> login(@RequestBody @Valid LoginForm form) {
+        return ResponseEntity.ok(ApiResponse.builderResponse(
+                SuccessCode.LOGIN, authservice.login(form)
+        ));
     }
 
     @PostMapping("/change-username")
-    public ResponseEntity changeUserName(@RequestBody ChangeUserNameForm form) {
+    public ResponseEntity<ApiResponse<String>> changeUserName(@RequestBody ChangeUserNameForm form) {
         authservice.changeUserName(form.getEmail(), form.getUserName());
-        return ResponseEntity.ok("Change username successfully");
+        return ResponseEntity.ok(ApiResponse.builderResponse(
+                SuccessCode.CHANGE_USERNAME, null
+        ));
     }
     @PostMapping("/change-password")
-    public ResponseEntity changePassword(@RequestBody ChangePasswordForm form) {
+    public ResponseEntity<ApiResponse<String>> changePassword(@RequestBody ChangePasswordForm form) {
         authservice.changePassword(form.getEmail(), form.getOldPassword(), form.getNewPassword());
-        return ResponseEntity.ok("Change password successfully");
+        return ResponseEntity.ok(ApiResponse.builderResponse(
+                SuccessCode.CHANGE_PASSWORD, null
+        ));
     }
 
 
