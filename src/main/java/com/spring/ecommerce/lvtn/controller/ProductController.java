@@ -10,6 +10,7 @@ import com.spring.ecommerce.lvtn.utils.enums.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +78,11 @@ public class ProductController {
             @RequestParam(defaultValue = "desc") String direction
     ){
         return ResponseEntity.ok(productService.searchProduct(keyword, page, size, sortBy, direction));
+    }
+
+    @GetMapping("/slug/{slug}/similar")
+    public ResponseEntity<Page<ProductProjection>> getSimilarProduct(@PathVariable String slug, Pageable pageable){
+        return ResponseEntity.ok(productService.similarProduct(slug, pageable));
     }
 
     @PostMapping

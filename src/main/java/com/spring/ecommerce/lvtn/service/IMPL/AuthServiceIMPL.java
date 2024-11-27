@@ -1,5 +1,6 @@
 package com.spring.ecommerce.lvtn.service.IMPL;
 
+import com.spring.ecommerce.lvtn.exception.AppException;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.LoginForm;
 import com.spring.ecommerce.lvtn.model.Dao.Request.Auth.RegisterForm;
 import com.spring.ecommerce.lvtn.model.Entity.User;
@@ -7,6 +8,7 @@ import com.spring.ecommerce.lvtn.repository.UserRepository;
 import com.spring.ecommerce.lvtn.service.AuthService;
 import com.spring.ecommerce.lvtn.service.MailService;
 import com.spring.ecommerce.lvtn.utils.JWT.JwtUntil;
+import com.spring.ecommerce.lvtn.utils.enums.ErrorCode;
 import com.spring.ecommerce.lvtn.utils.enums.Status;
 import lombok.RequiredArgsConstructor;
 
@@ -26,10 +28,10 @@ public class AuthServiceIMPL implements AuthService {
     @Value("${server.url}")
     String serverUrl;
 
-    public void register(RegisterForm registerForm) {
+    public User register(RegisterForm registerForm) {
         User user1 = userRepository.findByEmail(registerForm.getEmail());
         if (user1 != null) {
-            throw new RuntimeException("Email already exists");
+            throw new AppException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
         String hashPassword = passwordEncoder.encode(registerForm.getPassword());
         String token = generateVerificationToken(registerForm.getEmail());
@@ -53,6 +55,7 @@ public class AuthServiceIMPL implements AuthService {
         mailService.sendRegistrationConfirmMail(registerForm.getEmail(), confirmationUrl, registerForm.getFirstName(), registerForm.getLastName());
 
 
+        return user;
     }
 
     public String login(LoginForm loginForm) {

@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +22,14 @@ public interface ProductRepository extends MongoRepository<Product,String> {
 
     @Query("{'name': {$regex: ?0, $options: 'i'}}")
     Page<ProductProjection> findAllProjectedByName(String keyword, Pageable pageable);
+
+
+    // Lấy sản phẩm cùng category, sử dụng projection và phân trang
+    @Query("{ 'categories': ?0, '_id': { $ne: ?1 } }")
+    Page<ProductProjection> findByCategoryWithProjection(String category, String excludedId, Pageable pageable);
+
+    // Lấy sản phẩm trong khoảng giá
+    @Query("{ 'sellingPrice': { $gte: ?0, $lte: ?1 }, '_id': { $ne: ?2 } }")
+    Page<ProductProjection> findByPriceRangeWithProjection(double minPrice, double maxPrice, String excludedId, Pageable pageable);
+
 }

@@ -32,11 +32,11 @@ public class ProductForm {
 
     private int soldQuantity;
 
-    private BigDecimal originalPrice; //gia goc
+    private double originalPrice; //gia goc
 
-    private BigDecimal sellingPrice; //gia ban
+    private double sellingPrice; //gia ban
 
-    private BigDecimal discountedPrice; //gia giam
+    private double discountedPrice; //gia giam
 
     private int noOfView;
 

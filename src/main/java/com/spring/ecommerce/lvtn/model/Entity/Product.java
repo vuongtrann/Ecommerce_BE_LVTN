@@ -32,9 +32,9 @@ public class Product extends BaseEntity{
     private String sku;
     private int quantityAvailable;
     private int soldQuantity;
-    private BigDecimal originalPrice; //gia goc
-    private BigDecimal sellingPrice; //gia ban
-    private BigDecimal discountedPrice; //gia giam
+    private double originalPrice; //gia goc
+    private double sellingPrice; //gia ban
+    private double discountedPrice; //gia giam
     private int noOfView;
     private String sellingType;
 
@@ -51,13 +51,15 @@ public class Product extends BaseEntity{
 
 
 
-    public Product(String name, String description, String slug, String sku, int quantityAvailable, BigDecimal originalPrice, String sellingType, List<Category> categories, List<Collection> collections) {
+    public Product(String name, String description, String slug, String sku, int quantityAvailable, double originalPrice,double sellingPrice,double discountedPrice, String sellingType, List<Category> categories, List<Collection> collections) {
         this.name = name;
         this.description = description;
         this.slug = slug;
         this.sku = sku;
         this.quantityAvailable = quantityAvailable;
         this.originalPrice = originalPrice;
+        this.sellingPrice = sellingPrice;
+        this.discountedPrice = discountedPrice;
         this.sellingType = sellingType;
         this.categories = categories;
         this.collections = collections;
