@@ -4,6 +4,7 @@ import com.spring.ecommerce.lvtn.model.Dao.Request.ProductForm;
 import com.spring.ecommerce.lvtn.model.Dao.Respone.ProductProjection;
 import com.spring.ecommerce.lvtn.model.Entity.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public interface ProductService {
     Page<ProductProjection> searchProduct(String keyword, int page, int size, String sortBy, String direction);
     List<Product> findByBrand(String brandId);
     Optional<Product> findBySlug(String slug);
+    Page<ProductProjection> similarProduct(String productSlug, Pageable pageable);
     void delteteImage(String id, String imageUrl);
 
 

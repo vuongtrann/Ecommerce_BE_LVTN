@@ -77,6 +77,7 @@ public enum ErrorCode {
     PRODUCT_NOT_REQUIRED_PRICE(400, "Missing Required Product Price (SALE PRICE OR ORIGINAL PRICE)!", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(400, "Invalid Password!", HttpStatus.BAD_REQUEST),
 
+
     //role
     ROLE_NOT_FOUND( 404, "Role Not Found!",  HttpStatus.NOT_FOUND );
 

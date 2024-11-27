@@ -19,19 +19,15 @@ import com.spring.ecommerce.lvtn.service.Util.SlugifyService;
 import com.spring.ecommerce.lvtn.utils.enums.ErrorCode;
 import com.spring.ecommerce.lvtn.utils.enums.VariantType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
@@ -68,10 +64,12 @@ public class ProductServiceIMPL implements ProductService {
         Product product = new Product(
                 productForm.getName(),
                 productForm.getDescription(),
-                slugifyService.generateSlug(productForm.getName()),
+                slugifyService.generateSlug(productForm.getName()+"-"+Instant.now().getEpochSecond()),
                 productForm.getSku(),
                 productForm.getQuantityAvailable(),
                 productForm.getOriginalPrice(),
+                productForm.getSellingPrice(),
+                productForm.getDiscountedPrice(),
                 productForm.getSellingType(),
                 categories,
                 collections
@@ -207,6 +205,53 @@ public class ProductServiceIMPL implements ProductService {
         product.setNoOfView(product.getNoOfView() + 1);
         save(product);
         return Optional.of(product);
+    }
+
+    @Override
+    public Page<ProductProjection> similarProduct(String productSlug, Pageable pageable) {
+        Product currentProduct = productRepository.findProductBySlug(productSlug).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        if (currentProduct == null) {
+            return Page.empty();
+        }
+
+
+
+        // Lấy danh sách sản phẩm theo category
+        List<ProductProjection> similarByCategory = productRepository.findByCategoryWithProjection(
+                currentProduct.getCategories().getFirst().getId(), currentProduct.getId(), Pageable.unpaged()).getContent();
+
+        // Lấy danh sách sản phẩm theo khoảng giá
+        List<ProductProjection> similarByPrice = productRepository.findByPriceRangeWithProjection(
+                currentProduct.getSellingPrice()*0.8, currentProduct.getSellingPrice()*1.2, currentProduct.getId(), Pageable.unpaged()).getContent();
+
+        // Gộp danh sách và loại bỏ trùng lặp (theo id), đồng thời loại bỏ currentProduct
+        Map<String, ProductProjection> combined = new LinkedHashMap<>();
+
+        // Lọc bỏ currentProduct trong danh sách similarByCategory
+        similarByCategory.forEach(product -> {
+            if (!product.getId().equals(currentProduct.getId())) {
+                combined.put(product.getId(), product);
+            }
+        });
+
+        // Lọc bỏ currentProduct trong danh sách similarByPrice
+        similarByPrice.forEach(product -> {
+            if (!product.getId().equals(currentProduct.getId())) {
+                combined.put(product.getId(), product);
+            }
+        });
+
+        // Chuyển sang danh sách paginated
+        List<ProductProjection> combinedList = new ArrayList<>(combined.values());
+
+        // Áp dụng phân trang
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), combinedList.size());
+        if (start > combinedList.size()) {
+            return Page.empty();
+        }
+        return new PageImpl<>(combinedList.subList(start, end), pageable, combinedList.size());
     }
 
     @Override

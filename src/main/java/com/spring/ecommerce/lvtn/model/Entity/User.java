@@ -2,6 +2,7 @@ package com.spring.ecommerce.lvtn.model.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.ecommerce.lvtn.utils.enums.ERole;
+import com.spring.ecommerce.lvtn.utils.enums.Status;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -16,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document("Users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User extends BaseEntity{
+public class User{
     @Id
     String id;
     String firstName;
@@ -25,10 +26,15 @@ public class User extends BaseEntity{
 
     @UniqueElements(message = "Email already exists")
     String email;
+    @JsonIgnore
+    @NotBlank(message = "Password is required")
     String password;
     @UniqueElements(message = "Username already exists")
     String userName;
     ERole role;
+    String avatar;
+
+    Status status;
 
     @JsonIgnore
     boolean hasVerified;
@@ -36,6 +42,10 @@ public class User extends BaseEntity{
     String forgotPasswordToken;
     @JsonIgnore
     String verificationToken;
+    @JsonIgnore
+    boolean isLocked;
+
+
 
     public User(@NotBlank(message = "First name is required") String firstName, @NotBlank(message = "Last name is required") String lastName, @NotBlank(message = "Phone is required") String phone, @NotBlank(message = "Email is required") @Email(message = "Email is invalid") String email, String encodedPassword, ERole role) {
     }
