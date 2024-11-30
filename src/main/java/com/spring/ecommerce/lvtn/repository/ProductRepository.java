@@ -32,4 +32,5 @@ public interface ProductRepository extends MongoRepository<Product,String> {
     @Query("{ 'sellingPrice': { $gte: ?0, $lte: ?1 }, '_id': { $ne: ?2 } }")
     Page<ProductProjection> findByPriceRangeWithProjection(double minPrice, double maxPrice, String excludedId, Pageable pageable);
 
+    List<Product> findAllByIdIn(List<String> productIds);
 }

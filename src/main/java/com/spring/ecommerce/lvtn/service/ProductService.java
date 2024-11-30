@@ -26,4 +26,5 @@ public interface ProductService {
     void delteteImage(String id, String imageUrl);
 
 
+    List<Product> findAllByIds(List<String> productIds);
 }

@@ -5,6 +5,7 @@ import com.spring.ecommerce.lvtn.model.Dao.Respone.ApiResponse;
 import com.spring.ecommerce.lvtn.model.Dao.Respone.ProductProjection;
 import com.spring.ecommerce.lvtn.model.Entity.Product;
 import com.spring.ecommerce.lvtn.service.ProductService;
+import com.spring.ecommerce.lvtn.service.RecentlyViewedService;
 import com.spring.ecommerce.lvtn.service.UploadFileService;
 import com.spring.ecommerce.lvtn.utils.enums.SuccessCode;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
     private final UploadFileService uploadFileService;
+    private final RecentlyViewedService recentlyViewedService;
 
     @GetMapping
     public ResponseEntity<Page<ProductProjection>> getAllProduct(
@@ -41,7 +43,8 @@ public class ProductController {
 
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiResponse<Optional<Product>>> getProductById(@PathVariable String productId){
+    public ResponseEntity<ApiResponse<Optional<Product>>> getProductById(@PathVariable String productId, @RequestHeader("userId") Long userId){
+        recentlyViewedService.addProductToRecentlyViewed(userId, productId);
         return ResponseEntity.ok(
                 ApiResponse.builderResponse(
                         SuccessCode.FETCHED,
@@ -50,11 +53,13 @@ public class ProductController {
         );
     }
     @GetMapping("/slug/{slug}")
-    public ResponseEntity<ApiResponse<Optional<Product>>> getProductBySlug(@PathVariable String slug){
+    public ResponseEntity<ApiResponse<Optional<Product>>> getProductBySlug(@PathVariable String slug, @RequestHeader("userId") Long userId){
+        Optional<Product> product = productService.findBySlug(slug);
+        product.ifPresent(value -> recentlyViewedService.addProductToRecentlyViewed(userId, value.getId()));
         return ResponseEntity.ok(
                 ApiResponse.builderResponse(
                         SuccessCode.FETCHED,
-                        productService.findBySlug(slug)
+                        product
                 )
         );
     }
@@ -85,6 +90,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.similarProduct(slug, pageable));
     }
 
+    @GetMapping("/recently-viewed")
+    public ResponseEntity<ApiResponse<List<Product>>> getRecentlyViewedProducts(@RequestHeader("userId") Long userId){
+        return ResponseEntity.ok(
+                ApiResponse.builderResponse(
+                        SuccessCode.FETCHED,
+                        recentlyViewedService.getAllRecentlyViewedProducts(userId)
+                )
+        );
+    }
     @PostMapping
     public ResponseEntity<ApiResponse<Product>> createProduct(@RequestBody ProductForm productForm){
         return ResponseEntity.ok(
