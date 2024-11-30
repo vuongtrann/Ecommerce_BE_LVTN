@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User{
     @Id
     String id;
+    Long userId;
     String firstName;
     String lastName;
     String phone;
@@ -45,6 +46,9 @@ public class User{
     @JsonIgnore
     boolean isLocked;
 
+    public User(Long userId){
+        this.userId = userId;
+    }
 
 
     public User(@NotBlank(message = "First name is required") String firstName, @NotBlank(message = "Last name is required") String lastName, @NotBlank(message = "Phone is required") String phone, @NotBlank(message = "Email is required") @Email(message = "Email is invalid") String email, String encodedPassword, ERole role) {

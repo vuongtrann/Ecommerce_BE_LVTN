@@ -17,11 +17,11 @@ import java.io.IOException;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("{id}/upload/avatar")
-    public ResponseEntity<ApiResponse<User>> uploadAvatar(@PathVariable String id,@RequestParam("avatar") MultipartFile avatar) throws IOException {
+    @PostMapping("{userId}/upload/avatar")
+    public ResponseEntity<ApiResponse<User>> uploadAvatar(@PathVariable Long userId,@RequestParam("avatar") MultipartFile avatar) throws IOException {
         return ResponseEntity.ok(ApiResponse.builderResponse(
                 SuccessCode.UPLOADED,
-                userService.uploadAvatar(id,avatar)
+                userService.uploadAvatar(userId,avatar)
         ));
 
     }

@@ -7,6 +7,7 @@ import com.spring.ecommerce.lvtn.model.Entity.User;
 import com.spring.ecommerce.lvtn.repository.UserRepository;
 import com.spring.ecommerce.lvtn.service.AuthService;
 import com.spring.ecommerce.lvtn.service.MailService;
+import com.spring.ecommerce.lvtn.service.Util.SequenceGeneratorService;
 import com.spring.ecommerce.lvtn.utils.JWT.JwtUntil;
 import com.spring.ecommerce.lvtn.utils.enums.ErrorCode;
 import com.spring.ecommerce.lvtn.utils.enums.Status;
@@ -24,6 +25,8 @@ public class AuthServiceIMPL implements AuthService {
     private final MailService mailService;
     private final JwtUntil jwtUntil;
     private final PasswordEncoder passwordEncoder;
+    private final SequenceGeneratorService sequenceGeneratorService;
+
 
     @Value("${server.url}")
     String serverUrl;
@@ -37,7 +40,7 @@ public class AuthServiceIMPL implements AuthService {
         String token = generateVerificationToken(registerForm.getEmail());
 
         User user = new User();
-
+        user.setUserId(sequenceGeneratorService.generateSequence("user_sequence"));
         user.setFirstName(registerForm.getFirstName());
         user.setLastName(registerForm.getLastName());
         user.setEmail(registerForm.getEmail());
