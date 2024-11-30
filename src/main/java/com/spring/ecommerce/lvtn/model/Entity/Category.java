@@ -21,8 +21,7 @@ import java.util.List;
 @Document("Categories")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category extends BaseEntity{
-    @Id
-    private String id;
+
     private String name;
     private String slug;
     private String icon;

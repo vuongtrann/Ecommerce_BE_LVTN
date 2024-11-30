@@ -22,8 +22,6 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product extends BaseEntity{
 
-    @Id
-    private String id;
     private String name;
     private String description;
     private String slug;

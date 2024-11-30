@@ -1,5 +1,6 @@
 package com.spring.ecommerce.lvtn.model.Entity.Helper;
 
+import com.spring.ecommerce.lvtn.model.Entity.BaseEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "database_sequences")

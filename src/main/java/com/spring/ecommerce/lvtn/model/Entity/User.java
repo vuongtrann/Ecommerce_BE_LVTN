@@ -17,9 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document("Users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User{
-    @Id
-    String id;
+public class User extends BaseEntity {
     Long userId;
     String firstName;
     String lastName;
@@ -35,7 +33,6 @@ public class User{
     ERole role;
     String avatar;
 
-    Status status;
 
     @JsonIgnore
     boolean hasVerified;

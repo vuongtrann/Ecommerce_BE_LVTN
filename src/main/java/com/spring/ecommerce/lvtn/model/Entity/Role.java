@@ -14,9 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Document("Roles")
-public class Role {
-    @Id
-    private String ID;
+public class Role extends BaseEntity {
     private ERole role;
-
 }

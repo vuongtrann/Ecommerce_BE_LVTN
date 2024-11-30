@@ -269,4 +269,9 @@ public class ProductServiceIMPL implements ProductService {
         }
     }
 
+    @Override
+    public List<Product> findAllByIds(List<String> productIds) {
+        return productRepository.findAllByIdIn(productIds);
+    }
+
 }
