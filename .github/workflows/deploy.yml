@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'adoptium'  # Đảm bảo Java 17 được cài đặt
+          distribution: 'temurin'  # Đảm bảo Java 17 được cài đặt
           maven-version: '3.8.1'   # Cài đặt Maven (nếu chưa cài sẵn)
 
       # Kiểm tra cài đặt Maven
