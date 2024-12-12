@@ -140,9 +140,21 @@
 
 
     </dependencies>
-
     <build>
         <plugins>
+            <!-- Cập nhật maven-compiler-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version> <!-- Sử dụng phiên bản mới nhất hỗ trợ Java 21 -->
+                <configuration>
+                    <source>21</source> <!-- Biên dịch mã nguồn với Java 21 -->
+                    <target>21</target> <!-- Chỉ định target version là Java 21 -->
+                    <release>21</release> <!-- Đảm bảo biên dịch với phiên bản Java 21 -->
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot plugin (để giữ nguyên cấu hình bạn đã gửi) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -157,5 +169,23 @@
             </plugin>
         </plugins>
     </build>
+
+
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <excludes>-->
+<!--                        <exclude>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
