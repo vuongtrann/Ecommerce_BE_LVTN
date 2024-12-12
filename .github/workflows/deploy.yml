@@ -16,12 +16,12 @@ jobs:
       - name: Set up Maven
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'adoptopenjdk'
+          java-version: '17'  # Thay đổi phiên bản Java nếu cần
+          distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
 
       # 2. Build project Spring Boot với Maven
       - name: Build project with Maven
-        run: mvn clean package -DskipTests  # Sử dụng mvn clean package để build ứng dụng
+        run: ./mvn clean package -DskipTests  # Sử dụng mvn clean package để build ứng dụng
 
       # 3. Build Docker image
       - name: Build Docker image
