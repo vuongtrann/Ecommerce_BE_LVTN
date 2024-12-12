@@ -3,7 +3,7 @@ name: Build and Deploy Spring Boot to Google Cloud
 on:
   push:
     branches:
-      - main  # Cấu hình để chạy khi có push lên nhánh main
+      - dev  # Cấu hình để chạy khi có push lên nhánh main
 
 jobs:
   build-and-deploy:
