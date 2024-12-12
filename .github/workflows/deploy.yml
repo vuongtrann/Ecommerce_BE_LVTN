@@ -8,36 +8,19 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
+   steps:
+      - name: Check out code
         uses: actions/checkout@v2
 
-
-      # Cài đặt Java 17 từ Adoptium
-      - name: Set up Java 17
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          java-package: 'jdk'
-          architecture: 'x64'
-          check-latest: false
+          java-version: '17'  # Thay đổi phiên bản Java nếu cần
+          distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
 
-      # Cài đặt Maven
-      - name: Set up Maven
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'  # Đảm bảo Java 17 được cài đặt
-          maven-version: '3.8.1'   # Cài đặt Maven (nếu chưa cài sẵn)
+      - name: Build project
+        run: ./mvnw clean package -DskipTests  # Dùng lệnh build phù hợp với project của bạn
 
-      # Kiểm tra cài đặt Maven
-      - name: Verify Maven version
-        run: mvn --version
-
-      # Build project với Maven
-      - name: Build project with Maven
-        run: mvn clean package -DskipTests
 
       # 3. Build Docker image
       - name: Build Docker image
