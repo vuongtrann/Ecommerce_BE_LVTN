@@ -32,6 +32,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/api/v1/auth/**").permitAll() // Endpoint cho đăng nhập, đăng ký
 //                        .requestMatchers("/api/v1/category/**").authenticated() // Yêu cầu xác thực cho API category
 //                        .requestMatchers("/api/v1/product/**").authenticated() // Yêu cầu xác thực cho API product
+//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Cho phép truy cập Swagger UI và API Docs
                         .anyRequest().permitAll()) // Endpoint còn lại yêu cầu xác thực
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không dùng session
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Thêm bộ lọc JWT vào chuỗi
