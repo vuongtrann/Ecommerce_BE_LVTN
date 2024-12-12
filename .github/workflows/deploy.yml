@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'oraclejdk'
+          distribution: 'temurin'
           java-package: 'jdk'
           architecture: 'x64'
           check-latest: false
