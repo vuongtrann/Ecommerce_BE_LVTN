@@ -146,7 +146,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version> <!-- Sử dụng phiên bản mới nhất hỗ trợ Java 21 -->
+                <version>3.9.0</version> <!-- Sử dụng phiên bản mới nhất hỗ trợ Java 21 -->
                 <configuration>
                     <source>21</source> <!-- Biên dịch mã nguồn với Java 21 -->
                     <target>21</target> <!-- Chỉ định target version là Java 21 -->
