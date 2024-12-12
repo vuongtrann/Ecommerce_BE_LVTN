@@ -12,16 +12,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 1. Cài đặt Maven
+
+      # Cài đặt Java 17 từ Adoptium
+      - name: Set up Java 17 (Adoptium)
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adoptium'
+          java-package: 'jdk'
+          architecture: 'x64'
+          check-latest: false
+
+      # Cài đặt Maven
       - name: Set up Maven
         uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Thay đổi phiên bản Java nếu cần
-          distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
+          java-version: '17'
+          distribution: 'adoptium'  # Đảm bảo Java 17 được cài đặt
+          maven-version: '3.8.1'   # Cài đặt Maven (nếu chưa cài sẵn)
 
-      # 2. Build project Spring Boot với Maven
+      # Kiểm tra cài đặt Maven
+      - name: Verify Maven version
+        run: mvn --version
+
+      # Build project với Maven
       - name: Build project with Maven
-        run: ./mvn clean package -DskipTests  # Sử dụng mvn clean package để build ứng dụng
+        run: mvn clean package -DskipTests
 
       # 3. Build Docker image
       - name: Build Docker image
