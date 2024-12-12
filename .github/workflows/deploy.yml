@@ -16,7 +16,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Thay đổi phiên bản Java nếu cần
+          java-version: '21'  # Thay đổi phiên bản Java nếu cần
           distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
 
       - name: Build project
