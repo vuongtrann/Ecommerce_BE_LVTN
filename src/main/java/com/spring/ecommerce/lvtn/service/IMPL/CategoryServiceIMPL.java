@@ -79,6 +79,7 @@ public class CategoryServiceIMPL implements CategoryService {
         category.setVariantTypes(categoryForm.getVariantTypes());
         category.setSpecificationTypes(categoryForm.getSpecificationTypes());
         category.setIsFeatured(categoryForm.getIsFeatured());
+        category.setStatus(Status.ACTIVE);
 
         category = categoryRepository.save(category);
 
@@ -154,7 +155,6 @@ public class CategoryServiceIMPL implements CategoryService {
         if (!category.getParent().isEmpty() || !category.getChildren().isEmpty()) {
             throw new AppException(ErrorCode.CATEGORY_HAS_RELATIONSHIPS);
         }
-
         categoryRepository.deleteById(categoryId);
     }
 
