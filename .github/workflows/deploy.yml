@@ -6,9 +6,10 @@ on:
       - dev  # Cấu hình để chạy khi có push lên nhánh main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-   steps:
+
+    steps:
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -22,10 +23,11 @@ jobs:
         run: ./mvnw clean package -DskipTests  # Dùng lệnh build phù hợp với project của bạn
 
 
+
       # 3. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/ecom-442616/spring-boot-app:latest .
+          docker build -t gcr.io/ecom-442616/spring-boot-app:latest
 
       # 4. Push Docker image lên Google Container Registry
       - name: Authenticate with Google Cloud
