@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '21'
-          distribution: 'adoptopenjdk'
+          distribution: 'corretto'
 
       # 2. Build project Spring Boot với Maven
       - name: Build project with Maven
