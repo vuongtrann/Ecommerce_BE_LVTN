@@ -1,55 +1,55 @@
-name: Build and Deploy Spring Boot to Google Cloud
-
-on:
-  push:
-    branches:
-      - dev  # Cấu hình để chạy khi có push lên nhánh main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21'  # Thay đổi phiên bản Java nếu cần
-          distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
-
-      - name: Build project
-        run: ./mvnw clean package -DskipTests  # Dùng lệnh build phù hợp với project của bạn
-
-
-
-      # 3. Build Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t gcr.io/ecom-442616/spring-boot-app:latest .
-
-      # 4. Push Docker image lên Google Container Registry
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}  # Lưu thông tin tài khoản Google Cloud dưới dạng secrets
-
-      - name: Push Docker image to GCR
-        run: |
-          docker push gcr.io/ecom-442616/spring-boot-app:latest
-
-      # 5. SSH vào Google Cloud instance và deploy
-      - name: SSH into Google Cloud Instance and deploy
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.GCP_INSTANCE_IP }}
-          username: ${{ secrets.GCP_USERNAME }}
-          key: ${{ secrets.GCP_SSH_KEY }}  # Lưu khóa SSH dưới dạng secrets
-          script: |
-            # Dừng container cũ nếu có
-            docker ps -q --filter "name=spring-boot-app" | xargs -r docker stop
-            docker ps -aq --filter "name=spring-boot-app" | xargs -r docker rm
-            # Pull image mới và chạy container mới
-            docker pull gcr.io/ecom-442616/spring-boot-app:latest
-            docker run -d -p 8888:8888 --name spring-boot-app gcr.io/ecom-442616/spring-boot-app:latest
+#name: Build and Deploy Spring Boot to Google Cloud
+#
+#on:
+#  push:
+#    branches:
+#      - dev  # Cấu hình để chạy khi có push lên nhánh main
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up JDK
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '21'  # Thay đổi phiên bản Java nếu cần
+#          distribution: 'temurin'  # Thay đổi phiên bản Java nếu cần
+#
+#      - name: Build project
+#        run: ./mvnw clean package -DskipTests  # Dùng lệnh build phù hợp với project của bạn
+#
+#
+#
+#      # 3. Build Docker image
+#      - name: Build Docker image
+#        run: |
+#          docker build -t gcr.io/ecom-442616/spring-boot-app:latest .
+#
+#      # 4. Push Docker image lên Google Container Registry
+#      - name: Authenticate with Google Cloud
+#        uses: google-github-actions/auth@v1
+#        with:
+#          credentials_json: ${{ secrets.GCP_CREDENTIALS }}  # Lưu thông tin tài khoản Google Cloud dưới dạng secrets
+#
+#      - name: Push Docker image to GCR
+#        run: |
+#          docker push gcr.io/ecom-442616/spring-boot-app:latest
+#
+#      # 5. SSH vào Google Cloud instance và deploy
+#      - name: SSH into Google Cloud Instance and deploy
+#        uses: appleboy/ssh-action@v0.1.5
+#        with:
+#          host: ${{ secrets.GCP_INSTANCE_IP }}
+#          username: ${{ secrets.GCP_USERNAME }}
+#          key: ${{ secrets.GCP_SSH_KEY }}  # Lưu khóa SSH dưới dạng secrets
+#          script: |
+#            # Dừng container cũ nếu có
+#            docker ps -q --filter "name=spring-boot-app" | xargs -r docker stop
+#            docker ps -aq --filter "name=spring-boot-app" | xargs -r docker rm
+#            # Pull image mới và chạy container mới
+#            docker pull gcr.io/ecom-442616/spring-boot-app:latest
+#            docker run -d -p 8888:8888 --name spring-boot-app gcr.io/ecom-442616/spring-boot-app:latest
